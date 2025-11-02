@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Bases del Pacífico — Era Militar (Panamá)</title>
+
+  <!-- Leaflet (map) -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+  <!-- AOS (scroll animations) -->
+  <link href="https://unpkg.com/aos@2.3.4/dist/aos.css" rel="stylesheet">
+
+  <style>
+    :root{
+      --bg:#0b0b0c;
+      --panel:rgba(255,255,255,0.04);
+      --accent:#caa72b;
+      --muted:#bfbfbf;
+      --glass: rgba(255,255,255,0.04);
+      font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#040404 0%, #0f1113 60%);color:#eee}
+    .hero{
+      height:86vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background-image: url('https://c.files.bbci.co.uk/8E65/production/_110035463_gettyimages-127980283.jpg');
+      background-size:cover;
+      background-position:center;
+      position:relative;
+      overflow:hidden;
+    }
+    .hero::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg, rgba(2,2,2,0.55), rgba(2,2,2,0.85));mix-blend-mode:multiply}
+    .hero-inner{position:relative;z-index:2;padding:2rem;max-width:1100px;text-align:left;display:grid;grid-template-columns:1fr 360px;gap:2rem;align-items:center}
+    h1{font-size:clamp(2rem,4vw,3.25rem);margin:0 0 .25rem 0;letter-spacing:0.6px}
+    .sub{color:var(--muted);margin-bottom:1rem}
+    .cta{display:inline-block;margin-top:1rem;background:var(--accent);color:#071014;padding:.8rem 1.1rem;border-radius:10px;font-weight:600;text-decoration:none}
+
+    .card{background:var(--panel);backdrop-filter:blur(6px);padding:1.2rem;border-radius:14px;border:1px solid rgba(255,255,255,0.04)}
+    .card h3{margin:0 0 .5rem 0}
+    .meta{font-size:.88rem;color:var(--muted)}
+
+    main{padding:3rem 2rem 6rem}
+    .section{max-width:1100px;margin:0 auto;padding:2rem 0}
+
+    #map{height:480px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04)}
+
+    .gallery{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .gallery img{width:100%;height:200px;object-fit:cover;border-radius:8px;filter:grayscale(.8) contrast(.9);transition:all .45s}
+    .gallery img:hover{filter:none;transform:scale(1.02)}
+
+    footer{padding:2rem;text-align:center;color:var(--muted);font-size:.9rem}
+
+    @media (max-width:900px){.hero-inner{grid-template-columns:1fr;text-align:center}.hero-inner .card{order:2}}
+  </style>
+
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <section class="hero">
+    <div class="hero-inner" data-aos="fade-up">
+      <div>
+        <h1>Las Bases del Pacífico — Era Militar (1970s–1989)</h1>
+        <p class="sub">Un vistazo histórico a las bases de Howard, Rodman y Albrook durante el periodo militar panameño. Espacios clave para el control del Canal y la cooperación —y tensión— entre Panamá y Estados Unidos.</p>
+        <a class="cta" href="#explorar">Explorar Historia</a>
+        <div style="margin-top:1.2rem;color:var(--muted);font-size:.95rem">Haz clic en los marcadores del mapa para conocer datos, funciones y ubicación de polígonos de tiro.</div>
+      </div>
+
+      <aside class="card" data-aos="fade-left">
+        <h3>Información general</h3>
+        <p class="meta">Periodo: 1970–1989 • Bases: Howard, Rodman, Albrook</p>
+        <hr style="margin:.8rem 0;border:none;border-top:1px solid rgba(255,255,255,0.04)">
+        <p style="font-size:.95rem;color:var(--muted)">En su punto máximo, las bases del Pacífico albergaron más de 10,000 efectivos con entrenamiento en operaciones aéreas, navales y tácticas de selva. Los polígonos de tiro de Emperador servían para prácticas de artillería y maniobras de infantería.</p>
+      </aside>
+    </div>
+  </section>
+
+  <main>
+    <section id="explorar" class="section" data-aos="fade-up">
+      <h2>Contexto histórico</h2>
+      <p style="color:var(--muted);line-height:1.6">Estas bases fueron esenciales para el control logístico del Pacífico durante la era militar panameña. En ellas se desarrollaban entrenamientos de vuelo, navegación, defensa del Canal y tácticas terrestres. También concentraban jerarquías de mando, zonas de alojamiento, comedores y campos de práctica de tiro. Con los años, tras los tratados Torrijos–Carter, la mayoría pasaron a control panameño.</p>
+    </section>
+
+    <section class="section" data-aos="fade-up">
+      <h2>Mapa - Pacífico</h2>
+      <div id="map"></div>
+    </section>
+
+    <section class="section" data-aos="fade-up">
+      <h2>Galería histórica</h2>
+      <div class="gallery">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/3/34/Howardafb-panama.jpg" alt="Howard AFB - foto histórica">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/US_and_Colombian_ships_at_NS_Rodman_in_1989.JPEG/800px-US_and_Colombian_ships_at_NS_Rodman_in_1989.JPEG" alt="Rodman Naval Station - foto histórica">
+        <img src="https://storage.googleapis.com/hippostcard/p/863fcdd84915949f8d505b69b4630e26-800.jpg" alt="Albrook AFB - foto histórica">
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    Proyecto realizado por: Josué Pinzón.
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/aos@2.3.4/dist/aos.js"></script>
+  <script>
+    AOS.init({duration:800, once:true});
+
+    // Mapa Leaflet
+    const map = L.map('map', {zoomControl:true}).setView([8.92, -79.59], 11);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {maxZoom:18, attribution:'© OpenStreetMap contributors'}).addTo(map);
+
+    // Marcadores de las bases
+    const bases = [
+      {name:'Howard Air Force Base', coords:[8.91500, -79.59944], text:`<strong>Howard Air Force Base</strong><br>Operativa: 1942–1999.<br>Centro aéreo y logístico clave para la defensa del Canal.`},
+      {name:'Rodman Naval Station', coords:[8.936, -79.578], text:`<strong>Rodman Naval Station</strong><br>Estación naval estratégica con muelles, talleres y depósitos.`},
+      {name:'Albrook Air Force Base', coords:[8.981, -79.555], text:`<strong>Albrook Air Force Base</strong><br>Base aérea de apoyo, comunicaciones y entrenamiento regional.`},
+      {name:'Polígono de tiro de Emperador', coords:[8.941, -79.657], text:`<strong>Polígono de tiro de Emperador</strong><br>Zona utilizada para prácticas de artillería y maniobras de infantería durante el periodo militar.`}
+    ];
+
+    bases.forEach(b=>{
+      L.marker(b.coords).addTo(map).bindPopup(b.text);
+    });
+  </script>
+</body>
+</html>
